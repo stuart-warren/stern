@@ -15,6 +15,8 @@
 package kubernetes
 
 import (
+	"path/filepath"
+
 	"github.com/pkg/errors"
 	"k8s.io/client-go/1.5/kubernetes"
 	"k8s.io/client-go/1.5/tools/clientcmd"
@@ -26,8 +28,13 @@ import (
 
 // NewClientConfig returns a new Kubernetes client config set for a context
 func NewClientConfig(configPath string, contextName string) clientcmd.ClientConfig {
+	configPaths := filepath.SplitList(configPath)
+	configLoadingRules := &clientcmd.ClientConfigLoadingRules{ExplicitPath: configPath}
+	if len(configPaths) > 1 {
+		configLoadingRules = &clientcmd.ClientConfigLoadingRules{Precedence: configPaths}
+	}
 	return clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
-		&clientcmd.ClientConfigLoadingRules{ExplicitPath: configPath},
+		configLoadingRules,
 		&clientcmd.ConfigOverrides{
 			CurrentContext: contextName,
 		},

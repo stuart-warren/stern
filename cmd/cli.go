@@ -52,9 +52,10 @@ type Options struct {
 }
 
 var opts = &Options{
-	container: ".*",
-	tail:      -1,
-	color:     "auto",
+	container:  ".*",
+	tail:       -1,
+	color:      "auto",
+	kubeConfig: os.Getenv("KUBECONFIG"),
 }
 
 func Run() {
@@ -206,10 +207,6 @@ func getKubeConfig() (string, error) {
 	var kubeconfig string
 
 	if kubeconfig = opts.kubeConfig; kubeconfig != "" {
-		return kubeconfig, nil
-	}
-
-	if kubeconfig = os.Getenv("KUBECONFIG"); kubeconfig != "" {
 		return kubeconfig, nil
 	}
 
