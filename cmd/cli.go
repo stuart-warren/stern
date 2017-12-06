@@ -64,6 +64,8 @@ var opts = &Options{
 	color:          "auto",
 	template:       "",
 	output:         "default",
+	namespace:      os.Getenv("KUBECTL_NAMESPACE"),
+	context:        os.Getenv("KUBECTL_CONTEXT"),
 }
 
 func Run() {
